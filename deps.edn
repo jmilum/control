@@ -1,0 +1,36 @@
+{:deps  {org.clojure/clojure              {:mvn/version "1.10.1"}
+         com.hypirion/clj-xchart          {:mvn/version "0.2.0"}
+         org.apache.commons/commons-math3 {:mvn/version "3.6.1"}
+         org.clojure/tools.namespace      {:mvn/version "1.0.0"}
+         org.clojure/math.numeric-tower   {:mvn/version "0.0.4"}
+         complex                          {:mvn/version "0.1.12"}
+         org.clojure/algo.generic         {:mvn/version "0.1.3"}
+         org.clojure/data.csv             {:mvn/version "1.0.0"}
+         org.clojure/math.combinatorics   {:mvn/version "0.1.6"}
+         criterium                        {:mvn/version "0.4.5"}
+         net.mikera/core.matrix           {:mvn/version "0.62.0"}
+         apache-commons-matrix            {:local/root "../apache-commons-matrix"}}
+
+ :aliases {:outdated {:extra-deps {olical/depot {:mvn/version "1.8.4"}}
+                      :main-opts ["-m" "depot.outdated.main"]}
+           :socket {:jvm-opts ["-Dclojure.server.repl={:port,50505,:accept,clojure.core.server/repl}"]}
+           :prepl {:jvm-opts ["-Dclojure.server.repl={:port,40404,:accept,clojure.core.server/io-prepl}"]}
+           :rebel {:extra-deps {com.bhauman/rebel-readline {:mvn/version "RELEASE"}}
+                   :main-opts ["-m" "rebel-readline.main"]}
+           :comp {:extra-deps {compliment {:mvn/version "RELEASE"}}}
+           :rebl {:extra-deps {org.clojure/core.async {:mvn/version "0.4.490"}
+                               org.clojure/data.csv {:mvn/version "0.1.4"}
+                               org.clojure/data.json {:mvn/version "0.2.3"}
+                               org.yaml/snakeyaml {:mvn/version "1.23"}
+                               com.cognitect/rebl {:local/root "../REBL-0.9.172/REBL-0.9.172.jar"}}
+                  :main-opts ["-m" "cognitect.rebl"]}
+           :lint {:extra-deps {com.jameslaverack/cljfmt-runner
+                               {:git/url "https://github.com/JamesLaverack/cljfmt-runner"
+                                :sha "97960e9a6464935534b5a6bab529e063d0027128"}}
+                  :main-opts ["-m" "cljfmt-runner.check"]}
+           :lint/fix {:extra-deps {com.jameslaverack/cljfmt-runner
+                                   {:git/url "https://github.com/JamesLaverack/cljfmt-runner"
+                                    :sha "97960e9a6464935534b5a6bab529e063d0027128"}}
+                      :main-opts ["-m" "cljfmt-runner.fix"]}}
+
+ :paths ["src" "resources" "dev"]}
