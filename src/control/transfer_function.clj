@@ -137,12 +137,12 @@
         delta 0.01
         k     (/ (* (Math/exp (* sigma t)) delta 0.5) 3.14159)
         f     (fn [i]
-                (c/real-part
-                 (c/* (c/exp (c/complex 0 (* t i)))
-                      (util/peval-complex fs (c/complex sigma i)))))
+                  (c/real-part
+                   (c/* (c/exp (c/complex 0 (* t i)))
+                        (util/peval-complex fs (c/complex sigma i)))))
         rf    (fn
-                ([] 0)
-                ([sum i] (+ sum (f i) (f (+ i delta)))))]
+               ([] 0)
+               ([sum i] (+ sum (f i) (f (+ i delta)))))]
     (* k (r/fold + rf (vec (range 0 nint delta))))))
 
 (defn zakian [fs t]
@@ -153,10 +153,10 @@
            [(c/complex 5.225453361 15.72952905) (c/complex -118.7414011 -141.3036911)]]]
     (-> (reduce
          (fn [acc [k1 k2]]
-           (+ acc
-              (c/real-part
-               (c/* k2
-                    (util/peval-complex fs (c// k1 t))))))
+             (+ acc
+                (c/real-part
+                 (c/* k2
+                      (util/peval-complex fs (c// k1 t))))))
          0
          k)
         (* 2)
@@ -203,9 +203,9 @@
   (->> roots
        (map c/-)
        (map (fn [x]
-              (if (= x (c/complex 0 0))
-                [x (c/complex 1 0)]
-                [(c/complex 1 0) x])))
+                (if (= x (c/complex 0 0))
+                  [x (c/complex 1 0)]
+                  [(c/complex 1 0) x])))
        (apply util/convolve)
        (mapv #(c/real-part %))))
 
@@ -531,32 +531,32 @@
 
 (defn impulse-out [k]
   (fn [state]
-    (if (nil? (:out state))
-      (assoc state :out k)
-      (assoc state :out 0))))
+      (if (nil? (:out state))
+        (assoc state :out k)
+        (assoc state :out 0))))
 
 (defn assoc-param [param f]
   (fn [state]
-    (let [coll (get state param)]
-      (assoc state param (conj (pop coll) (f (nth* coll 0 0)))))))
+      (let [coll (get state param)]
+        (assoc state param (conj (pop coll) (f (nth* coll 0 0)))))))
 
 (defn update-param [param f]
   (fn [state]
-    (let [coll (get state param)]
-      (update state param (conj (pop coll) (f (nth* coll 0 0)))))))
+      (let [coll (get state param)]
+        (update state param (conj (pop coll) (f (nth* coll 0 0)))))))
 
 (defn conj-const-param [param val]
   (fn [state]
-    (update state param #(conj % val))))
+      (update state param #(conj % val))))
 
 (defn prbs-gen [param delta-t low high]
   (fn [state]
-    (let [{:keys [tstep t]} state
-          val (cond
-                (<= tstep (mod (nth* t 0 0) delta-t)) (nth* (get state param) 0 0)
-                (= 0 (rand-int 2)) low
-                :else high)]
-      (update state param #(conj % val)))))
+      (let [{:keys [tstep t]} state
+            val (cond
+                  (<= tstep (mod (nth* t 0 0) delta-t)) (nth* (get state param) 0 0)
+                  (= 0 (rand-int 2)) low
+                  :else high)]
+        (update state param #(conj % val)))))
 
 (defn s->2nd-order [m]
   (let [{:keys [k den dt]} m
@@ -603,11 +603,11 @@
 (defn loop-exercise [m]
   (let [{:keys [spt bias-out switch-time] :or {spt 50 bias-out 0 switch-time 0}} m]
     (fn [state]
-      (let [t    (nth* (:t state) 0 0)
-            bias (if (<= t switch-time) 0 bias-out)]
-        (-> state
-            (assoc :bias-out bias)
-            (update :spt #(conj % spt)))))))
+        (let [t    (nth* (:t state) 0 0)
+              bias (if (<= t switch-time) 0 bias-out)]
+          (-> state
+              (assoc :bias-out bias)
+              (update :spt #(conj % spt)))))))
 
 (defn parallel->serial [m]
   (let [{:keys [kc tau-i tau-d] :or {tau-d 0}} m
@@ -712,10 +712,10 @@
 #_(step-info process-response)
 
 (defn construct-A [m]
-  (let [n (dec (count (:den m)))
-        ones (m/identity-matrix (dec n))
+  (let [n     (dec (count (:den m)))
+        ones  (m/identity-matrix (dec n))
         zeros (m/column-matrix (repeat (dec n) 0))
-        data (m/row-matrix (map unchecked-negate (butlast (:den m))))]
+        data  (m/row-matrix (map unchecked-negate (butlast (:den m))))]
     (if (< n 2)
       data
       (m/join-along 0 (m/join-along 1 zeros ones) data))))
@@ -724,18 +724,18 @@
   (let [n (dec (count (:den m)))]
     (m/column-matrix (reverse (util/pad n [1] 0)))))
 
-(defn construct-C [m]
-  (let [{:keys [num den]} m
-        n (dec (count den))]
-    (m/row-matrix (util/pad n num 0))))
+;(defn construct-C [m]
+;  (let [{:keys [num den]} m
+;        n (dec (count den))]
+;    (m/row-matrix (util/pad n num 0))))
 
 (defn construct-C [m]
   (let [{:keys [num den]} m
-        n (count den)
+        n  (count den)
         b' (util/pad n num 0)
         b0 (last b')
-        b (butlast b')
-        a (butlast den)]
+        b  (butlast b')
+        a  (butlast den)]
     (m/row-matrix (mapv #(- %1 (* %2 b0)) b a))))
 
 (defn construct-D [m]

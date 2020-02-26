@@ -50,3 +50,16 @@
 #_(util/plotx (:Y (ss/step {:model G :tstep 0.1 :tmax 5 :k 1})))
 
 #_(util/plotx (:Y (ss/lsim-fb G 0.1 (m/matrix [1.473 13.456 18.827]))))
+
+#_(util/plotx (:Y (ss/step {:model (tf/->ss {:num  [1] :den [1 1]})
+                            :tstep 0.1
+                            :tmax 5
+                            :k 1})))
+
+#_(def model {:num [1] :den [10 2 1] :dt 0})
+#_(util/plotx (:meas (tf/step model 1 0.1 5)))
+#_(util/plotx (:Y (ss/step {:model (tf/->ss model) :tstep 0.1 :k 1 :tmax 5})))
+
+;(def model {:num  [1] :den [0 1]})
+
+;(util/plotx (:meas (tf/step model 1 0.1 5)))

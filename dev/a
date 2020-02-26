@@ -1,6 +1,0 @@
-   [apache-commons-matrix.core]
-   [clojure.core.matrix :as m]
-   [clojure.core.matrix.linear :as ml]
-   [control.state-space :as ss]
-   [control.transfer-function :as tf]
-   [clojure.math.numeric-tower :as math]))
